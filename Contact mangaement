@@ -1,0 +1,197 @@
+            /*CONTACT MANAGEMENT*/
+
+//header_file
+#include<iostream>
+#include<bits/stdc++.h>
+#include<string>
+#include<conio.h>
+#include<fstream>
+using namespace std;
+
+
+//declaring global variable
+string first_name,last_name,phone_number;
+
+
+//functions
+void add_contact();
+void search_contact();
+void help();
+void self_exit();
+bool check_digits(string);
+bool check_numbers(string);
+string to_upper(string);
+//main function
+int main()
+{
+    //DECLARING VARIABLES
+    short int choice;
+    system("cls");
+    system("color 0A");
+    cout<<"\n\n\n\t\tCONTACT MANAGEENT";
+    cout<<"\n\n\t1.ADD CONTACT\n\t2.SEARCH CONTACT\n\t3.HELP\n\t4.EXIT";
+    cout<<"\n\tENTER YOUR CHOICE : ";
+    cin>>choice;
+    switch(choice)
+    {
+    case 1:
+        {
+            add_contact();
+            break;
+        }
+    case 2:
+        {
+            search_contact();
+            break;
+        }
+    case 3:
+        {
+            help();
+            break;
+        }
+    case 4:
+        {
+            self_exit();
+            break;
+        }
+    default:
+        {
+            cout<<"\n\n\tINVALID INPUT";
+            cout<<"\n\tPRESS ANY KEY TO CONTINUE";
+        }
+        getch();
+        main();
+    }
+
+    return 0;
+}
+
+//add contact function
+void add_contact()
+{
+    ofstream phone("number.txt",ios::app);
+    system("cls");
+    cout<<"\n\n\tENTER THE FIRST NAME : ";
+    cin>>first_name;
+    cout<<"\n\tENTER THE LAST NAME : ";
+    cin>>last_name;
+    cout<<"\n\tENTER THE PHONE NUMBER : ";
+    cin>>phone_number;
+
+    //checking whether phone number contains 10 digits
+    if(check_digits(phone_number)==true)
+    {
+        //checking whether phone number contains only numbers
+        if(check_numbers(phone_number)==true)
+        {
+            if(phone.is_open())
+            {
+                phone<<first_name<<" "<<last_name<<" "<<phone_number<<endl;
+                cout<<"\n\tCONTACT SAVED SUCCESSFULLY!";
+            }
+            else
+            {
+                cout<<"\n\tERROR OPENING FILE!";
+            }
+        }
+        else
+        {
+            cout<<"\n\tTHE PHONE NUMBER MUST CONTAINS ONLY NUMBERS";
+        }
+    }
+    else
+    {
+        cout<<"\n\tTHE PHONE NUMBER MUST CONTAINS ATLEAST 10 DIGITS";
+    }
+    phone.close();
+}
+
+//search contact function
+void search_contact()
+{
+    system("cls");
+    bool found = false;
+    ifstream myfile("number.txt");
+    string keyword;
+    cout<<"\n\tENTER NAME TO BE SEARCHED : ";
+    cin>>keyword;
+    while(myfile>>first_name>>last_name>>phone_number)
+    {
+        if(keyword==first_name || keyword==last_name)
+        {
+            system("cls");
+            cout<<"\n\n\n\t\tCONTACT DETIALS";
+            //declaring variables
+            string fname,lname,phone_num;
+            fname=first_name;
+            fname=to_upper(fname);
+            cout<<"\n\n\tFIRST NAME : "<<fname;
+            lname=last_name;
+            lname=to_upper(lname);
+            cout<<"\n\tLAST NAME : "<<lname;
+            phone_num=phone_number;
+            phone_num=to_upper(phone_num);
+            cout<<"\n\tPHONE NUMBER : "<<phone_num;
+            found=true;
+            break;
+        }
+    }
+    if(found==false)
+    {
+        cout<<"\n\tNO SUCH CONTACT FOUND";
+    }
+
+}
+
+//help function
+void help()
+{
+    system("cls");
+    cout<<"\n\n\tTHIS DISPLAYS HELP";
+}
+
+//exit function
+void self_exit()
+{
+    system("cls");
+    cout<<"\n\n\tTHANK YOU FOR USING";
+    exit(0);
+}
+
+//function to check whether phone number contains 10 digits
+bool check_digits(string str)
+{
+    if(str.length()==10)
+    {
+        return true;
+    }
+
+    else
+    {
+        return false;
+    }
+}
+
+//function to check whether phone number contains only numbers
+bool check_numbers(string str)
+{
+    for(int i=0;i<str.length();i++)
+    {
+        if(str[i]<'0' || str[i]>'9')
+        {
+             return false;
+        }
+    }
+    return true;
+}
+
+//upper case conversion
+string to_upper(string str)
+{
+    for(int i=0;i<str.length();i++)
+    {
+        str[i]=toupper(str[i]);
+    }
+    return str;
+}
+
